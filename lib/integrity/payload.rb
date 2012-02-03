@@ -1,6 +1,7 @@
 module Integrity
   class Payload
     def self.build(payload, all)
+      Integrity.logger.info("instatiating new payload due to build request.")
       new(payload).build(all)
     end
 
@@ -9,6 +10,7 @@ module Integrity
     end
 
     def build(all)
+      Integrity.logger.info("instatiating new payloadbuilder due to build request.")
       PayloadBuilder.build(self, all)
     end
 
