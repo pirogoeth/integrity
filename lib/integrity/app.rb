@@ -34,8 +34,6 @@ module Integrity
         halt 403
       end
 
-      Integrity.logger.info("Received github payload, parsing and building.")
-
       Payload.build(
         JSON.parse(params[:payload]),
         Integrity.config.build_all?
