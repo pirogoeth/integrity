@@ -34,6 +34,8 @@ module Integrity
         halt 403
       end
 
+      Integrity.logger.info("Received github payload, parsing and building.")
+
       Payload.build(
         JSON.parse(params[:payload]),
         Integrity.config.build_all?
@@ -119,7 +121,11 @@ module Integrity
       login_required unless current_project.public?
       
       unless current_project.artifacts_empty? and File.exists?(artifact)
-        send_file "#{Integrity.config.directory}/#{current_project.last_build_id}/#{artifact}"
+        if artifact.include? "~"
+          artifact.gsub!(/(~)/, "/")
+        end
+        send_file "#{Integrity.config.directory}/#{current_project.last_build_id}/#{artifact}",
+                  :filename => "#{File.basename(artifact)}"
       end
     end
 
@@ -127,7 +133,11 @@ module Integrity
       login_required unless current_project.public?
       
       unless current_project.artifacts_empty? and File.exists?(artifact)
-        send_file "#{Integrity.config.directory}/#{id}/#{artifact}"
+        if artifact.include? "~"
+          artifact.gsub!(/(~)/, "/")
+        end
+        send_file "#{Integrity.config.directory}/#{id}/#{artifact}",
+                  :filename => "#{File.basename(artifact)}"
       end
     end
     
