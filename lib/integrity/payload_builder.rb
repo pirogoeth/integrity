@@ -14,7 +14,7 @@ module Integrity
         projects.each { |project| project.destroy }
         0
       else
-        builds.each { |build| build.run! }.size
+        builds.each { |build| build.run }.size
       end
     end
 
