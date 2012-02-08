@@ -21,7 +21,7 @@ module Integrity
     def builds
       @builds ||=
         projects.inject([]) { |acc, project|
-          acc.concat @payload.commits.map { |c| project.builds.create(:commit => c) }
+          acc.concat commits.map { |c| project.builds.create(:commit => c) }
         }
     end
 
