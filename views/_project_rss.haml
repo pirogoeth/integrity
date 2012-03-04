@@ -1,0 +1,23 @@
+!!! XML
+
+%rss{ :version => "2.0" }
+  %channel
+    %link{ :rel => "project", :href => "#{project_url(project)}" }
+    %description #{project.name} Project RSS Feed
+    %generator Integrity
+    - project.builds.reverse.each do |build|
+      %item
+        %name build #{build.id}
+        %success #{build.successful}
+        %commit 
+          %message #{build.commit.full_message}
+          %author #{build.commit.author.to_s.split()[0]}
+          %identifier #{build.commit.identifier}
+          %link #{github_commit_url(build)}
+        %link #{build_url(build)}
+        %guid #{build_url(build)}
+        %started_at #{build.started_at}
+        %completed_at #{build.completed_at}
+        %id #{build.id}
+        %project_id #{build.project_id}
+        %parent #{build.project.name}

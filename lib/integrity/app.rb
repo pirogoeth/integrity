@@ -169,6 +169,12 @@ module Integrity
       redirect root_url.to_s
     end
 
+    get "/:project/rss" do
+      content_type "application/xml"
+    
+      partial("project_rss", :project => current_project)
+    end
+
     get "/:project/edit" do
       login_required
 
