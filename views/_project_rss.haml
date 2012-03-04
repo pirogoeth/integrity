@@ -6,19 +6,53 @@
     %title #{project.name}
     %description #{project.name} Project RSS Feed
     %generator Integrity
-    - project.builds.reverse.each do |build|
-      %item
-        %name build #{build.id}
+    - if filter == :all || filter == "all"
+      - project.builds.reverse.each do |build|
+        %build
+          %id #{build.id}
+          %started_at #{build.started_at}
+          %completed_at #{build.completed_at}
+          %success #{build.successful}
+          %commit 
+            %message #{build.commit.full_message}
+            %author #{build.commit.author.to_s.split()[0]}
+            %identifier #{build.commit.identifier}
+            %link #{github_commit_url(build)}
+          %link #{build_url(build)}
+          %parent #{build.project.name}
+          %project_id #{build.project_id}
+    - elsif filter == "latest"
+      - build = project.last_build
+      %build
+        %id #{build.id}
+        %started_at #{build.started_at}
+        %completed_at #{build.completed_at}
         %success #{build.successful}
-        %commit 
+        %commit
           %message #{build.commit.full_message}
           %author #{build.commit.author.to_s.split()[0]}
           %identifier #{build.commit.identifier}
           %link #{github_commit_url(build)}
         %link #{build_url(build)}
-        %guid #{build_url(build)}
-        %started_at #{build.started_at}
-        %completed_at #{build.completed_at}
-        %id #{build.id}
-        %project_id #{build.project_id}
         %parent #{build.project.name}
+        %project_id #{build.project_id}
+    - elsif filter.to_i != 0 && filter.to_i > 0
+      - limit = 1
+      - project.builds.reverse.each do |build|
+        - if limit <= filter.to_i
+          %build
+            %id #{build.id}
+            %started_at #{build.started_at}
+            %completed_at #{build.completed_at}
+            %success #{build.successful}
+            %commit
+              %message #{build.commit.full_message}
+              %author #{build.commit.author.to_s.split()[0]}
+              %identifier #{build.commit.identifier}
+              %link #{github_commit_url(build)}
+            %link #{build_url(build)}
+            %parent #{build.project.name}
+            %project_id #{build.project_id}
+            - limit += 1
+        - elsif limit > filter.to_i
+          - break

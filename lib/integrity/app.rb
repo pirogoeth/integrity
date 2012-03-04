@@ -169,10 +169,16 @@ module Integrity
       redirect root_url.to_s
     end
 
+    get "/:project/rss/:filter" do |project, filter|
+      content_type "application/xml"
+    
+      partial :project_rss, { :project => current_project, :filter => filter }
+    end
+
     get "/:project/rss" do
       content_type "application/xml"
     
-      partial("project_rss", :project => current_project)
+      partial :project_rss, { :project => current_project, :filter => "all" }
     end
 
     get "/:project/edit" do
