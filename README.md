@@ -2,7 +2,7 @@ Integrity — Continuous Integration server
 ==========
 * * *
 
-This is my fork of the [Integrity][Integrity CI server], with some extra additions
+This is my fork of the [Integrity CI Server][Integrity], with some extra additions
 that I deemed necessary to have in the project.
 
 
